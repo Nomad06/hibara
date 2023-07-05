@@ -31,7 +31,7 @@ public class ProductEntity extends BaseTenantEntity {
     @GenericField(valueBridge = @ValueBridgeRef(type = OrderNumberValueBridge.class))
     private Integer orderNumber;
 
-    @FullTextField
+    @FullTextField(analyzer = "ngram")
     @Column(name = "name")
     private String name;
 

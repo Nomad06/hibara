@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LuceneIndexServiceBean {
 
-    private static final int THREAD_NUMBER = 4;
     private final EntityManager entityManager;
 
     public LuceneIndexServiceBean(EntityManagerFactory entityManagerFactory) {
