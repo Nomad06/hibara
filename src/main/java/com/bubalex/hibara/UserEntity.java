@@ -5,9 +5,13 @@ import lombok.*;
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 
 @Table(name = "user")
@@ -24,7 +28,6 @@ public class UserEntity extends BaseTenantEntity {
     public static final String PATTERN_BIRTHDAY = "yyyy-MM-dd";
 
     @Setter(AccessLevel.NONE)
-    @Column(updatable = false)
     @Formula("concat(first_name,' ',last_name)")
     private String fullName;
 
@@ -82,6 +85,8 @@ public class UserEntity extends BaseTenantEntity {
     @Column(name = "is_email_verified")
     private boolean emailVerified = false;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserRoleEntity> userRoles = new HashSet<>();
 
     /**
      * If the user has two factor authentication enabled.
@@ -89,6 +94,9 @@ public class UserEntity extends BaseTenantEntity {
     @Column(name = "is_two_fa_enabled")
     private boolean twoFaEnabled = false;
 
+    /**
+     * The phone number of the user.
+     */
     @FullTextField
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -162,5 +170,6 @@ public class UserEntity extends BaseTenantEntity {
     private boolean isNumberFillable() {
         return (phoneNumber != null && phoneNumber.length() == 11 && phoneNumber.startsWith("+1"));
     }
+
 
 }
